@@ -4,7 +4,9 @@ const bodyParser = require('body-parser')
 
 const app = express()
 
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
@@ -12,17 +14,22 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
   const location = req.body.location ? req.body.location : "Purnia";
-  const appId = "Your_api_here";
-  const url = "https://api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=" + appId + "&units=metric";
+  const appId = "7fbb24a1367fd89b6b51c41e0a81b431";
+  const url = "https://api.openweathermap.org/data/2.5/weather?q=" +
+    location + "&appid=" + appId + "&units=metric";
   https.get(url, (response) => {
-    console.log(response.statusCode);
-    response.on("data", (data) => {
-      const weatherData = JSON.parse(data);
-      const temp = weatherData.main.temp;
-      const icon = weatherData.weather[0].icon;
-      const imgUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
-      res.send(`<img src=${imgUrl}><br>Working! Temp in ${location} is ${temp} and the weather is ${weatherData.weather[0].description}`);
-    })
+    if (response.statusCode === 200) {
+      response.on("data", (data) => {
+        const weatherData = JSON.parse(data);
+        const temp = weatherData.main.temp;
+        const icon = weatherData.weather[0].icon;
+        const imgUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+        res.send(`<img src=${imgUrl}><br>Working! Temp in ${location} is 
+      ${temp} and the weather is ${weatherData.weather[0].description}`);
+      })
+    } else {
+      res.send("Some error occured, please check the spelling of the location!")
+    }
   })
 })
 
