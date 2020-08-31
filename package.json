@@ -1,7 +1,7 @@
 {
   "name": "weatherapp",
   "version": "1.0.0",
-  "description": "",
+  "description": "A small weather app made with Node Js and Openweathermap!",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
