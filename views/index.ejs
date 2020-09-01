@@ -7,25 +7,40 @@
     <title>EJS Template</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
   </head>
 
   <body>
     <% if (data === '') { %>
-    <div class="container mt-5">
+    <div class="container mt-5 col-lg-6">
+      <p class="display-4 text-center">Weatherapp! by <a href="https://pratiksah.com" target="_blank">Pratik</a></p>
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Search weather of your location</h5>
           <form action="/" method="post">
             <div class="form-group">
               <input type="text" class="form-control" name="location" placeholder="Location">
+              <p class="display-5 mt-3 text-muted">Default location is Purnia, In</p>
             </div>
             <button type="submit" class="btn btn-primary">Go</button>
           </form>
         </div>
       </div>
     </div>
+    <% } else if (data === '0') { %>
+    <div class="container mt-5">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-title">Some error occurred, please check the spelling of your location.</p>
+        </div>
+      </div>
+      <div class="text-center">
+        <a href="/" class="btn btn-primary mt-5 mx-auto">New location</a>
+      </div>
+    </div>
     <% } else { %>
     <div class="container mt-5">
+      <p class="display-4 text-center">Weatherapp! by <a href="https://pratiksah.com" target="_blank">Pratik</a></p>
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Weather in <%= data.name %>, <%= data.sys.country %></h5>
@@ -34,11 +49,17 @@
           <p class="display-1"><%= data.main.temp%><sup>o</sup>C</p>
           <span class="text-muted">Feels like <%= data.main.feels_like %><sup>o</sup>C</span>
           <h5 class="text-capitalize font-weight-bold"><%= data.weather[0].description %></h5>
-          <span class="text-capitalize pr-5"><i class="fas fa-wind"></i> Wind <%= data.wind.speed %>m/sec</span>
-          <span class="text-capitalize pr-5"><i class="fas fa-paper-plane"></i> Pressure <%= data.main.pressure %>mb</span>
-          <span class="text-capitalize pr-5"><i class="fas fa-tint"></i> Humidity <%= data.main.humidity %>%</span>
-          <span class="text-capitalize pr-5"><i class="fas fa-eye"></i> Visibility <%= data.visibility %>m</span>
+          <div class="overflow-x">
+            <span class="pr-5 inf"><i class="fas fa-wind"></i> Wind <%= data.wind.speed %> m/sec</span>
+            <span class="pr-5 inf"><i class="fas fa-paper-plane"></i> Pressure <%= data.main.pressure %> mb</span>
+            <span class="pr-5 inf"><i class="fas fa-tint"></i> Humidity <%= data.main.humidity %>%</span>
+            <span class="pr-5 inf"><i class="fas fa-eye"></i> Visibility <%= data.visibility/1000 %> km</span>
+            <span class="pr-5 inf"><i class="fas fa-cloud"></i> Cloudiness <%= data.clouds.all %>%</span>
+          </div>
         </div>
+      </div>
+      <div class="text-center">
+        <a href="/" class="btn btn-primary mt-5 mx-auto">New location</a>
       </div>
     </div>
     <% } %>
