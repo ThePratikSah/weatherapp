@@ -1,0 +1,8 @@
+<%
+  function unixConvert(unixTimestamp) {
+    dateObj = new Date(unixTimestamp * 1000);
+    utcString = dateObj.toUTCString();
+    time = utcString.slice(-11, -4);
+    return time;
+  }
+<%>

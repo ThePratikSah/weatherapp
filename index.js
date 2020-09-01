@@ -4,12 +4,18 @@ const bodyParser = require('body-parser')
 
 const app = express()
 
+// telling my app to use ejs as the default template engine
+app.set('view engine', 'ejs');
+
 app.use(bodyParser.urlencoded({
   extended: true
 }))
 
+// code to serve the static files
+app.use(express.static("public"))
+
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html')
+  res.render('index', {data: ''});
 })
 
 app.post('/', (req, res) => {
@@ -21,14 +27,15 @@ app.post('/', (req, res) => {
     if (response.statusCode === 200) {
       response.on("data", (data) => {
         const weatherData = JSON.parse(data);
-        const temp = weatherData.main.temp;
-        const icon = weatherData.weather[0].icon;
-        const imgUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
-        res.send(`<img src=${imgUrl}><br>Working! Temp in ${location} is 
-      ${temp} and the weather is ${weatherData.weather[0].description}`);
+        res.render('index', {data: weatherData});
+      //   const temp = weatherData.main.temp;
+      //   const icon = weatherData.weather[0].icon;
+      //   const imgUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+      //   res.send(`<img src=${imgUrl}><br>Working! Temp in ${location} is 
+      // ${temp} and the weather is ${weatherData.weather[0].description}`);
       })
     } else {
-      res.send("Some error occured, please check the spelling of the location!")
+      res.render('index', {data: "Some error occured, please check the spelling of the location!"})
     }
   })
 })
